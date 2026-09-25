@@ -4,7 +4,7 @@ export const SITE_TITLE = 'Shelf Made Home';
 export const SITE_DESCRIPTION =
   'A place for everything, even in the smallest kitchen. Organization ideas, pantry makeovers and storage inspiration for a calmer home.';
 
-export const CONTACT_EMAIL = 'hello@shelfmadehome.com';
+export const CONTACT_EMAIL = 'theshelfmadehome@gmail.com';
 export const PINTEREST_URL = 'https://www.pinterest.com/shelfmadehome/';
 
 // Your Amazon Associates tracking ID (from the Associates dashboard), e.g. "shelfmadeho-20".
