@@ -27,13 +27,13 @@ const pageUrl = new URL(Astro.url.pathname, Astro.site);
         <p class="meta muted">
           <time datetime={shown.toISOString()}>{updatedDate ? 'Updated ' : ''}{fmt(shown)}</time>, {minutes} min read
         </p>
+        {post.data.affiliate && <AffiliateNote />}
         <PinButton url={pageUrl} media={pinImage ?? heroImage} description={title} />
       </div>
       <img class="arch" src={heroImage} alt={heroAlt} width="800" height="1000" fetchpriority="high" />
     </header>
 
     <div class="container body">
-      {post.data.affiliate && <AffiliateNote />}
       <div class="prose">
         <Content />
       </div>
