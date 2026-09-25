@@ -1,0 +1,31 @@
+---
+// Use inside .mdx posts:
+// <ProductCard name="Expandable shelf riser" asin="B0XXXXXXX" image="/images/products/riser.jpg">Why it helps…</ProductCard>
+// Pass either `asin` (uses AMAZON_TAG from consts.ts) or a full `href` (e.g. an amzn.to SiteStripe link).
+// Amazon rules: don't show prices, and only use product images from SiteStripe/PA-API or your own photos.
+import { AMAZON_TAG } from '../consts';
+interface Props { name: string; asin?: string; href?: string; image?: string; imageAlt?: string }
+const { name, asin, href, image, imageAlt = '' } = Astro.props;
+const url = href ?? (asin ? `https://www.amazon.com/dp/${asin}${AMAZON_TAG ? `?tag=${AMAZON_TAG}` : ''}` : undefined);
+---
+<aside class="product" aria-label={name}>
+  {image && <img src={image} alt={imageAlt} loading="lazy" width="240" height="240" />}
+  <div class="body">
+    <p class="name">{name}</p>
+    <div class="why"><slot /></div>
+    {url
+      ? <a class="btn" href={url} rel="sponsored nofollow noopener" target="_blank">View on Amazon</a>
+      : import.meta.env.DEV && <p class="todo">Dev note: add an asin or href to show the Amazon button.</p>}
+  </div>
+</aside>
+
+<style>
+  .product { display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: center; background: var(--sand); border-radius: 24px; padding: 24px; margin-block: 1.6em; }
+  .product:not(:has(img)) { grid-template-columns: 1fr; }
+  img { width: 140px; height: 140px; object-fit: contain; background: var(--paper-light); border-radius: 16px; }
+  .name { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; letter-spacing: -0.02em; margin: 0; line-height: 1.2; }
+  .why { margin: 8px 0 16px; font-size: 1rem; color: var(--ink-soft); }
+  .why :global(p) { margin: 0; }
+  .todo { margin: 0; font-size: 0.9rem; color: #8A3B25; }
+  @media (max-width: 560px) { .product { grid-template-columns: 1fr; } }
+</style>

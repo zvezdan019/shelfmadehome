@@ -1,0 +1,35 @@
+---
+import Mark from './Mark.astro';
+const path = Astro.url.pathname;
+const links = [
+  { href: '/ideas/', label: 'Ideas' },
+  { href: '/about/', label: 'About' },
+  { href: '/contact/', label: 'Contact' },
+];
+---
+<header class="site-header">
+  <div class="container bar">
+    <a class="brand" href="/" aria-label="Shelf Made Home, home page">
+      <Mark size={34} />
+      <span class="wordmark">shelfmade <span>home</span></span>
+    </a>
+    <nav aria-label="Main">
+      <ul>
+        {links.map((l) => (
+          <li><a href={l.href} aria-current={path.startsWith(l.href) ? 'page' : undefined}>{l.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header { padding-block: 22px; }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
+  .wordmark { font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; letter-spacing: -0.04em; }
+  .wordmark span { font-weight: 400; color: var(--blue); }
+  ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; }
+  nav a { color: var(--ink); text-decoration: none; font-weight: 500; padding-block: 6px; border-bottom: 2px solid transparent; }
+  nav a:hover, nav a[aria-current='page'] { border-bottom-color: var(--coral); }
+</style>

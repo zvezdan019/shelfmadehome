@@ -1,0 +1,20 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { post: CollectionEntry<'blog'> }
+const { post } = Astro.props;
+const { title, description, heroImage, heroAlt } = post.data;
+---
+<article class="card">
+  <a href={`/blog/${post.id}/`} class="link">
+    <img class="arch" src={heroImage} alt={heroAlt} loading="lazy" width="800" height="1000" />
+    <h3>{title}</h3>
+  </a>
+  <p class="muted">{description}</p>
+</article>
+
+<style>
+  .card { display: flex; flex-direction: column; gap: 14px; }
+  .link { text-decoration: none; color: var(--ink); display: flex; flex-direction: column; gap: 18px; }
+  .link:hover h3 { text-decoration: underline; text-decoration-color: var(--coral); text-decoration-thickness: 2px; text-underline-offset: 0.2em; }
+  p { margin: 0; font-size: 1rem; }
+</style>

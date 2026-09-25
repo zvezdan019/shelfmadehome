@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const [latest] = posts;
+---
+<BaseLayout>
+  <section class="container hero">
+    <div class="copy">
+      <h1>Organized kitchens, simply.</h1>
+      <p class="lede">Ideas for making a small kitchen work: pantry shelves, cabinet storage, cleaner counters and the few tools that are actually worth the space.</p>
+      {latest && <a class="btn" href={`/blog/${latest.id}/`}>Read the latest idea</a>}
+    </div>
+    {latest && (
+      <a class="hero-img" href={`/blog/${latest.id}/`} tabindex="-1" aria-hidden="true">
+        <img class="arch" src={latest.data.heroImage} alt="" width="800" height="1000" fetchpriority="high" />
+      </a>
+    )}
+  </section>
+
+  <section class="container latest" aria-labelledby="latest-heading">
+    <h2 id="latest-heading">Latest ideas</h2>
+    {posts.length
+      ? <div class="grid">{posts.slice(0, 6).map((post) => <PostCard post={post} />)}</div>
+      : <p class="muted">The first post is on its way.</p>}
+    {posts.length > 6 && <p><a href="/ideas/">See all ideas</a></p>}
+  </section>
+</BaseLayout>
+
+<style>
+  .hero { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: clamp(32px, 6vw, 88px); align-items: center; padding-block: clamp(32px, 6vw, 72px) clamp(56px, 8vw, 110px); }
+  .copy h1 { max-width: 11ch; }
+  .lede { font-size: 1.25rem; color: var(--ink-soft); max-width: 44ch; margin: 24px 0 32px; }
+  .hero-img { max-width: 440px; justify-self: end; width: 100%; }
+  .latest h2 { margin-bottom: 36px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px 36px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 720px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-img { justify-self: center; max-width: 340px; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>

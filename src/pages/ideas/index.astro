@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+<BaseLayout title="All kitchen organization ideas" description="Every Shelf Made Home idea for small kitchens, pantries, cabinets and counters.">
+  <section class="container page">
+    <h1>All ideas</h1>
+    <p class="muted intro">Everything on the blog, newest first.</p>
+    <div class="grid">{posts.map((post) => <PostCard post={post} />)}</div>
+  </section>
+</BaseLayout>
+<style>
+  .page { padding-top: 40px; }
+  .intro { margin: 16px 0 48px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px 36px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+</style>

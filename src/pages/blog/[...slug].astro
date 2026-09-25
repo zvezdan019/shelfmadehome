@@ -1,0 +1,64 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AffiliateNote from '../../components/AffiliateNote.astro';
+import PinButton from '../../components/PinButton.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { title, description, pubDate, updatedDate, heroImage, heroAlt, pinImage } = post.data;
+const words = (post.body ?? '').split(/\s+/).filter(Boolean).length;
+const minutes = Math.max(1, Math.round(words / 230));
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const shown = updatedDate ?? pubDate;
+const pageUrl = new URL(Astro.url.pathname, Astro.site);
+---
+<BaseLayout title={title} description={description} image={pinImage ?? heroImage} type="article">
+  <article>
+    <header class="container post-head">
+      <div class="head-copy">
+        <h1>{title}</h1>
+        <p class="lede">{description}</p>
+        <p class="meta muted">
+          <time datetime={shown.toISOString()}>{updatedDate ? 'Updated ' : ''}{fmt(shown)}</time>, {minutes} min read
+        </p>
+        <PinButton url={pageUrl} media={pinImage ?? heroImage} description={title} />
+      </div>
+      <img class="arch" src={heroImage} alt={heroAlt} width="800" height="1000" fetchpriority="high" />
+    </header>
+
+    <div class="container body">
+      <AffiliateNote />
+      <div class="prose">
+        <Content />
+      </div>
+      {pinImage && (
+        <figure class="pin">
+          <img src={pinImage} alt={`Pinterest graphic: ${title}`} width="1000" height="1500" loading="lazy" />
+          <figcaption><PinButton url={pageUrl} media={pinImage} description={title} /></figcaption>
+        </figure>
+      )}
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .post-head { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: clamp(32px, 6vw, 80px); align-items: end; padding-block: 32px 64px; }
+  .post-head h1 { font-size: clamp(2.3rem, 5vw, 3.8rem); max-width: 16ch; }
+  .lede { font-size: 1.25rem; color: var(--ink-soft); max-width: 46ch; margin: 22px 0 14px; }
+  .meta { font-size: 0.95rem; margin: 0 0 26px; }
+  .post-head .arch { max-width: 400px; justify-self: end; }
+  .body { display: flex; flex-direction: column; gap: 36px; }
+  .pin { margin: 48px 0 0; max-width: 420px; }
+  .pin img { border-radius: 20px; }
+  .pin figcaption { margin-top: 16px; }
+  @media (max-width: 760px) {
+    .post-head { grid-template-columns: 1fr; }
+    .post-head .arch { justify-self: start; max-width: 240px; order: -1; }
+  }
+</style>

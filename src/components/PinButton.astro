@@ -1,0 +1,8 @@
+---
+// Plain link to Pinterest's pin builder — no third-party script needed.
+interface Props { url: URL | string; media: string; description: string }
+const { url, media, description } = Astro.props;
+const mediaUrl = new URL(media, Astro.site).toString();
+const pinUrl = `https://www.pinterest.com/pin/create/button/?url=${encodeURIComponent(url.toString())}&media=${encodeURIComponent(mediaUrl)}&description=${encodeURIComponent(description)}`;
+---
+<a class="btn btn-outline" href={pinUrl} target="_blank" rel="noopener">Save to Pinterest</a>

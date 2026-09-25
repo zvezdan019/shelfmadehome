@@ -1,0 +1,9 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { CONTACT_EMAIL } from '../consts';
+---
+<PageLayout title="Contact" description="Get in touch with Shelf Made Home.">
+  <p>Questions, ideas for a post, or a kitchen problem you'd like solved? Send an email and I'll reply as soon as I can.</p>
+  <p><a class="btn" href={`mailto:${CONTACT_EMAIL}`}>Email {CONTACT_EMAIL}</a></p>
+  <p class="muted">For brand collaborations, include a short note about your product and a link to it.</p>
+</PageLayout>

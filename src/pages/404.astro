@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Page not found">
+  <section class="container nf">
+    <h1>This shelf is empty.</h1>
+    <p class="muted">The page you're looking for has moved or doesn't exist. The latest ideas are on the home page.</p>
+    <a class="btn" href="/">Go to the home page</a>
+  </section>
+</BaseLayout>
+<style>
+  .nf { padding-block: 80px; max-width: 640px; }
+  p { margin: 20px 0 32px; }
+</style>
