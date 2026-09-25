@@ -13,7 +13,7 @@ export const AMAZON_TAG = '';
 
 // Pinterest website claim: paste only the content value of the meta tag Pinterest gives you.
 // <meta name="p:domain_verify" content="THIS_PART"/>
-export const PINTEREST_DOMAIN_VERIFY = '';
+export const PINTEREST_DOMAIN_VERIFY = '8ec8ce104901b5d1246281b13e9abe30';
 
 // Optional: Cloudflare Web Analytics token (cookieless). Leave empty to disable.
 export const CF_ANALYTICS_TOKEN = '';
