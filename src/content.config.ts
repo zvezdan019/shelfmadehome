@@ -14,6 +14,8 @@ const blog = defineCollection({
     // Optional vertical 2:3 image used by the "Save to Pinterest" button.
     pinImage: z.string().optional(),
     draft: z.boolean().default(false),
+    // Set to true once the post contains affiliate links.
+    affiliate: z.boolean().default(false),
   }),
 });
 

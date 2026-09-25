@@ -33,7 +33,7 @@ const pageUrl = new URL(Astro.url.pathname, Astro.site);
     </header>
 
     <div class="container body">
-      <AffiliateNote />
+      {post.data.affiliate && <AffiliateNote />}
       <div class="prose">
         <Content />
       </div>
